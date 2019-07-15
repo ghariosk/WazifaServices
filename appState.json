@@ -1,0 +1,128 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "c8713a56-9241-41f2-9fe0-6a0d777e679a": {
+        "id": "c8713a56-9241-41f2-9fe0-6a0d777e679a",
+        "parent": null,
+        "name": "WazifaServices",
+        "type": "DIRECTORY",
+        "isDirectory": true,
+        "children": [
+          "21a92a9b-613a-46fb-948b-80aa1791d68b"
+        ],
+        "isRemovable": false,
+        "filePath": "WazifaServices"
+      },
+      "21a92a9b-613a-46fb-948b-80aa1791d68b": {
+        "id": "21a92a9b-613a-46fb-948b-80aa1791d68b",
+        "parent": "c8713a56-9241-41f2-9fe0-6a0d777e679a",
+        "name": "lambda.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "WazifaServices/lambda.js",
+        "code": "let AWS = require('aws-sdk');\nconst sns = new AWS.SNS();\n\nexports.handler = function (event, context, callback) {\n\n    let receiver = event['receiver'];\n    let sender = event['sender'];\n    let message = event['message'];\n    sns.publish({\n        Message: message,\n        MessageAttributes: {\n            'AWS.SNS.SMS.SMSType': {\n                'DataType': 'String',\n                'StringValue': 'Promotional'\n            },\n            'AWS.SNS.SMS.SenderID': {\n                'DataType': 'String',\n                'StringValue': sender\n            }\n        },\n        PhoneNumber: receiver\n    }).promise()\n        .then(data => {\n            // your code goes here\n        })\n        .catch(err => {\n            // error handling goes here\n        });\n \n\n    console.log(\"Sending message\", message, \"to receiver\", receiver);\n\n    callback(null, 'Successfully executed');\n}",
+        "config": {
+          "runtime": "nodejs8.10",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": []
+        },
+        "triggers": [
+          {
+            "resourceName": "apigusEast1SMSGatewaysendSMSpost",
+            "config": {}
+          }
+        ],
+        "testCases": {
+          "c0412e6f-1744-43e5-96cb-d7a08cb4bac1": {
+            "id": "c0412e6f-1744-43e5-96cb-d7a08cb4bac1",
+            "name": "Test Event",
+            "functionId": "21a92a9b-613a-46fb-948b-80aa1791d68b",
+            "event": "{\n    \"receiver\": \"+9613795112\",\n    \"sender\": \"Wazifa\",\n    \"message\": \"This is your verification code: \\n mariolechameau\"\n}"
+          }
+        }
+      }
+    },
+    "deletedFiles": [],
+    "rootNode": "c8713a56-9241-41f2-9fe0-6a0d777e679a",
+    "openFiles": [
+      "21a92a9b-613a-46fb-948b-80aa1791d68b"
+    ],
+    "currentFileId": "21a92a9b-613a-46fb-948b-80aa1791d68b",
+    "resources": {
+      "apigusEast1SMSGatewaysendSMSpost": {
+        "name": "apigusEast1SMSGatewaysendSMSpost",
+        "type": "API_GATEWAY",
+        "config": {
+          "selectedRegion": "us-east-1",
+          "apiMode": 0,
+          "apiName": "SMSGateway",
+          "endpointType": "EDGE",
+          "resourceMode": 0,
+          "resourceName": "sendSMS",
+          "resourcePath": "/sendSMS",
+          "restMethod": "POST",
+          "proxyIntegration": false,
+          "enableCORS": false,
+          "stageMode": 0,
+          "stageName": "prod",
+          "mode": 0
+        }
+      },
+      "snsDirectSMSResource": {
+        "name": "snsDirectSMSResource",
+        "type": "SNS",
+        "config": {
+          "snsType": 1,
+          "numbers": [
+            "@{number}"
+          ]
+        }
+      }
+    },
+    "customTemplate": {
+      "dialect": null,
+      "definitions": {}
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {
+        "aws-sdk": {
+          "name": "aws-sdk",
+          "language": "javascript",
+          "version": "2.176.0",
+          "dev": true,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "projectName": "WazifaServices",
+    "projectDescription": "Wazifa",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east-1",
+    "platform": "AWS",
+    "platformRegions": {},
+    "lastSave": 1563199378035
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "WazifaServices",
+      "url": "https://github.com/ghariosk/WazifaServices"
+    }
+  }
+}
